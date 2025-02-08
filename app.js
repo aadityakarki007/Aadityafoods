@@ -42,7 +42,7 @@ const baseItems = [
 
     // Western Starters
     { name: 'Caesar Salad', type: 'Vegetarian', price: 180, image: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=500', description: 'Crisp romaine lettuce with Caesar dressing.' },
-    { name: 'Garlic Bread', type: 'Vegetarian', price: 120, image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=500', description: 'Toasted bread with garlic butter and herbs.' },
+    { name: 'Garlic Bread', type: 'Vegetarian', price: 120, image: 'https://www.simplyrecipes.com/thmb/CgwVUFFMrYJyGq9Ipmc0uZ_EqJM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2006__09__Garlic-Bread-METHOD-2-bec7227928124a569a64dc7d0a85f3c1.jpg', description: 'Toasted bread with garlic butter and herbs.' },
     { name: 'Buffalo Wings', type: 'Non-Vegetarian', price: 220, image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=500', description: 'Spicy chicken wings with blue cheese dip.' },
     { name: 'Mozzarella Sticks', type: 'Vegetarian', price: 160, image: 'https://images.unsplash.com/photo-1531749668029-257fe339385f?w=500', description: 'Breaded and fried cheese sticks.' },
     { name: 'Onion Rings', type: 'Vegetarian', price: 140, image: 'https://images.unsplash.com/photo-1639024471283-03518883512d?w=500', description: 'Crispy battered onion rings.' },
