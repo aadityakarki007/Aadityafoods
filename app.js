@@ -455,9 +455,15 @@ function handleOrder(e) {
     const address = document.getElementById('orderAddress').value;
     const phone = document.getElementById('orderPhone').value;
     const foodId = document.getElementById('orderModal').dataset.foodId;
+    const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
 
     if (!name || !address || !phone || !foodId) {
         showToast('Please fill in all fields');
+        return;
+    }
+
+    if (quantity < 1) {
+        showToast('Please enter a valid quantity');
         return;
     }
 
@@ -468,9 +474,10 @@ function handleOrder(e) {
         items: [{
             id: food.id,
             name: food.name,
-            price: food.price
+            price: food.price,
+            quantity: quantity
         }],
-        total: food.price,
+        total: food.price * quantity,
         deliveryAddress: address,
         customerName: name,
         customerPhone: phone

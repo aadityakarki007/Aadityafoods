@@ -107,38 +107,75 @@ function loadUsers() {
 function loadOrders() {
     const content = document.querySelector('.page-content');
     content.innerHTML = '<h4>Orders</h4>';
+    
+    // Get orders from localStorage
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    
+    if (orders.length === 0) {
+        content.innerHTML += '<p>No orders found.</p>';
+        return;
+    }
 
-    mockOrders.forEach(order => {
+    orders.forEach(order => {
         const orderCard = document.createElement('div');
         orderCard.className = 'order-card mdl-card mdl-shadow--2dp';
+        
+        const orderDate = new Date(order.timestamp).toLocaleString();
+        const totalAmount = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
         orderCard.innerHTML = `
             <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">${order.foodName}</h2>
+                <h2 class="mdl-card__title-text">Order #${order.orderId}</h2>
             </div>
             <div class="mdl-card__supporting-text">
-                <div class="order-status order-status--${order.status}"></div>
-                <p>Customer: ${order.customerName}</p>
-                <p>Address: ${order.address}</p>
-                <p>Phone: ${order.phone}</p>
+                <p><strong>Customer:</strong> ${order.customerName}</p>
+                <p><strong>Date:</strong> ${orderDate}</p>
+                <p><strong>Status:</strong> <span class="status-${order.status.toLowerCase()}">${order.status}</span></p>
+                <p><strong>Total Amount:</strong> Rs. ${totalAmount}</p>
+                <div class="order-items">
+                    <h5>Ordered Items:</h5>
+                    <ul>
+                        ${order.items.map(item => `
+                            <li>${item.name} x ${item.quantity} - Rs. ${item.price * item.quantity}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <p><strong>Delivery Address:</strong> ${order.deliveryAddress}</p>
             </div>
             <div class="mdl-card__actions mdl-card--border">
-                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                        onclick="completeOrder(${order.id})">
-                    Complete Order
-                </button>
+                ${order.status === 'Pending' ? `
+                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            onclick="completeOrder('${order.orderId}')">
+                        Mark as Completed
+                    </button>
+                ` : ''}
             </div>
         `;
+        
         content.appendChild(orderCard);
     });
 }
 
 // Complete Order
 function completeOrder(orderId) {
-    const order = mockOrders.find(o => o.id === orderId);
-    if (order) {
-        order.status = 'completed';
-        loadOrders(); // Refresh the orders view
-    }
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders = orders.map(order => {
+        if (order.orderId === orderId) {
+            return { ...order, status: 'Completed' };
+        }
+        return order;
+    });
+    
+    localStorage.setItem('orders', JSON.stringify(orders));
+    loadOrders(); // Refresh the orders view
+    showToast('Order marked as completed!');
+}
+
+// Toast notification
+function showToast(message) {
+    const snackbarContainer = document.querySelector('#toast-container');
+    const data = { message, timeout: 2000 };
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
 }
 
 // Load Search
